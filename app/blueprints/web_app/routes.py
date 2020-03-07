@@ -69,9 +69,10 @@ def register():
     
     return render_template('register.html', message=None, title='Register', form=form)
 
+
 @web.route('/createAnnouncement', methods=['POST', 'GET'])
 @login_required
-def createAnnouncement():
+def create_announcement():
     form = AnnouncementForm()
 
     if form.validate_on_submit():
@@ -80,6 +81,7 @@ def createAnnouncement():
         db.session.commit()
         db.session.refresh(announcement)
 
+        # Process the form to get recipients
         stds = AppInstance.query.all()
         tokens = []
         

@@ -16,11 +16,30 @@ class RegistrationForm(FlaskForm):
 
     submit = SubmitField('Register')
 
-class AnnouncementForm(FlaskForm):
+
+class Recipients:
+    uni_first_year = BooleanField()
+    uni_second_year = BooleanField()
+    uni_third_year = BooleanField()
+    uni_forth_year = BooleanField()
+
+    sch_first_year = BooleanField()
+    sch_second_year = BooleanField()
+    sch_third_year = BooleanField()
+    sch_forth_year = BooleanField()
+
+    dpt_first_year = BooleanField()
+    dpt_second_year = BooleanField()
+    dpt_third_year = BooleanField()
+    dpt_forth_year = BooleanField()
+
+
+class AnnouncementForm(FlaskForm, Recipients):
     title = StringField("Title", [DataRequired()])
-    content = TextAreaField("Content", [DataRequired()],)
-    recipients = BooleanField("Recipients", [DataRequired()])
+    content = TextAreaField("Content", [DataRequired()])
     submit = SubmitField("Send")
+    # Recipients
+    # school_all
 
 class EventForm(FlaskForm):
     event_name = StringField("Event Name", [DataRequired()])

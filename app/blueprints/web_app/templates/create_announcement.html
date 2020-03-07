@@ -2,7 +2,7 @@
 {% block content %}
     <form method="post">
         <section>
-            <h1>Create new announcement</h1>
+            <h1 class="center-align">Create new announcement</h1>
             {{ form.hidden_tag() }}
             <div class="row">
                 <div class="input-field col s6">
@@ -24,50 +24,155 @@
 
         <section>
             <h4>Recipients</h4>
-
+            {# Currently the templating engine handles the logic to display different recipients based on the user level #}
             <div class="row">
-                <div class="col s12">
-                    <ul class="tabs tabs-fixed-width">
-                        <li class="tab col s3"><a class="active" href="#test1">Machakos University</a></li>
-                        <li class="tab col s3"><a href="#test2">{{ current_user.department.name }}</a>
-                        </li>
+                {% if current_user.level == 1 %}
+                    <div class="col s12">
+                        <ul class="tabs tabs-fixed-width">
+                            <li class="tab col s3"><a class="active" href="#university_recipient_tab">Machakos
+                                University</a></li>
+                            <li class="tab col s3"><a href="#school_recipient_tab">{{ current_user.school.name }}</a>
+                            </li>
+                            <li class="tab col s3"><a
+                                    href="#department_recipient_tab">{{ current_user.department.name }}</a></li>
+                        </ul>
+                    </div>
 
-                    </ul>
-                </div>
+                    <div id="university_recipient_tab" class="col s12 z-depth-1">
+                        <p>Currently the only available option is to send to all students</p>
+                        <label>
+                            {{ form.recipients(class = "filled-in") }}
+                            <span>All Students</span>
+                        </label>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" disabled="disabled">
+                                <span>First Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" disabled="disabled">
+                                <span>Second Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" disabled="disabled">
+                                <span>Third Years</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div id="school_recipient_tab" class="col s12 z-depth-1">
+                        <p>This option is currently not available</p>
+                    </div>
+                    <div id="department_recipient_tab" class="col s12 z-depth-1">
+                        <p>This option is currently not available</p>
+                    </div>
+                {% endif %}
 
-                <div id="test1" class="col s12 z-depth-1">
-                    <p>Currently the only available option is to send to all students</p>
-                    <label>
-                        {{ form.recipients(class = "filled-in") }}
-                        <span>All Students</span>
-                    </label>
-                    <p>
-                        <label>
-                            <input type="checkbox" class="filled-in" disabled="disabled">
-                            <span>First Years</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input type="checkbox" class="filled-in" disabled="disabled">
-                            <span>Second Years</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input type="checkbox" class="filled-in" disabled="disabled">
-                            <span>Third Years</span>
-                        </label>
-                    </p>
-                </div>
-                <div id="test2" class="col s12 z-depth-1">
-                    <p>This option is currently not available</p>
-                </div>
+                {% if current_user.level == 3 %}
+                    <div class="col s12">
+                        <ul class="tabs tabs-fixed-width">
+                            <li class="tab col s3"><a class="" href="#university_recipient_tab">Machakos University</a>
+                            </li>
+                            <li class="tab col s3"><a href="#school_recipient_tab">{{ current_user.school.name }}</a>
+                            </li>
+                            <li class="tab col s3"><a href="#department_recipient_tab"
+                                                      class="active">{{ current_user.department.name }}</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="university_recipient_tab" class="col s12 z-depth-1">
+                        <p>You cannot send university wise, contact HOD</p>
+                        <p>
+                            <label>
+                                {{ form.uni_first_year(disabled="disabled") }}
+                                <span>First Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.uni_second_year(disabled="disabled") }}
+                                <span>Second Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.uni_third_year(disabled="disabled") }}
+                                <span>Third Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.uni_forth_year(disabled="disabled") }}
+                                <span>Forth Years</span>
+                            </label>
+                        </p>
+                    </div>
+
+                    <div id="school_recipient_tab" class="col s12 z-depth-1">
+                        <p>You cannot send announcements school-wise, contact HOD</p>
+                        <p>
+                            <label>
+                                {{ form.sch_first_year(disabled="disabled") }}
+                                <span>First Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.sch_second_year(disabled="disabled") }}
+                                <span>Second Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.sch_third_year(disabled="disabled") }}
+                                <span>Third Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.sch_forth_year(disabled="disabled") }}
+                                <span>Forth Years</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div id="department_recipient_tab" class="col s12 z-depth-1">
+                        <p>Send announcements to students in {{ current_user.department.name }}</p>
+                        <p>
+                            <label>
+                                {{ form.dpt_first_year() }}
+                                <span>First Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.dpt_second_year() }}
+                                <span>Second Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.dpt_third_year() }}
+                                <span>Third Years</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                {{ form.dpt_forth_year() }}
+                                <span>Forth Years</span>
+                            </label>
+                        </p>
+                    </div>
+                {% endif %}
+
             </div>
-            <button class="btn waves-effect waves-light red" type="submit" name="action"
-                    onclick='document.getElementById("announcement_form").submit()'>Submit
+            <p class="center-align">
+                <button class="btn waves-effect waves-light green lighten-1" type="submit" name="action">Submit
                 <i class="material-icons right">send</i>
             </button>
+            </p>
         </section>
     </form>
 {% endblock %}

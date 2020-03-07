@@ -17,3 +17,6 @@ from app.blueprints.mobile.routes import mobile
 
 app.register_blueprint(web)
 app.register_blueprint(mobile)
+
+# Literally hav no shit to do...
+#
