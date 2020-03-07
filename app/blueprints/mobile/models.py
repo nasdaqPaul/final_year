@@ -5,12 +5,13 @@ from werkzeug.security import check_password_hash, generate_password_hash
 class Student(db.Model):
     __tablename__ = "students"
 
-    adm_number = db.Column(db.String(64), primary_key=True)
+    department = db.Column(db.CHAR(3), primary_key=True)
+    number = db.Column(db.Integer, primary_key=True)
+    admission_year = db.Column(db.Integer, primary_key=True)
+
     first_name = db.Column(db.String(64), nullable=False)
     middle_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
-    admission_year = db.Column(db.Integer, nullable=False)
-    course = db.Column(db.String(64), nullable=False)
 
     account = db.relationship('StudentAccount', uselist=False, back_populates='owner')
 
@@ -19,9 +20,15 @@ class Student(db.Model):
 
 
 class StudentAccount(db.Model):
-
     __tablename__ = 'student_accounts'
-    adm_number = db.Column(db.String, db.ForeignKey('students.adm_number'), primary_key=True)
+
+    department = db.Column(db.CHAR(3), primary_key=True)
+    number = db.Column(db.Integer, primary_key=True)
+    admission_year = db.Column(db.Integer, primary_key=True)
+
+    db.ForeignKeyConstraint([department, number, admission_year],
+                            [Student.department, Student.number, Student.admission_year])
+
     owner = db.relationship('Student', back_populates = 'account', uselist=False)
     app=db.relationship('AppInstance', back_populates='account', uselist=False)
     password = db.Column(db.String(120), nullable=False)
@@ -34,7 +41,13 @@ class StudentAccount(db.Model):
 
 class AppInstance(db.Model):
     __tablename__ = 'app_instances'
-    adm_number = db.Column(db.String, db.ForeignKey('student_accounts.adm_number'), primary_key=True)
+
+    department = db.Column(db.CHAR(3), primary_key=True)
+    number = db.Column(db.Integer, primary_key=True)
+    admission_year = db.Column(db.Integer, primary_key=True)
+
+    db.ForeignKeyConstraint([department, number, admission_year], [Student.department, Student.number, Student.admission_year])
+
     token = db.Column(db.String(240), nullable=False)
     account = db.relationship('StudentAccount', back_populates='app', uselist=False)
 

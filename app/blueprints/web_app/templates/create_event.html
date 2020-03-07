@@ -2,22 +2,27 @@
 {% block content %}
     <form method="post">
         <section>
-            <h1>Create Event</h1>
+            <h1 class="center-align">Create Event</h1>
 
             {{ form.hidden_tag() }}
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s3">
                     <i class="material-icons prefix">add</i>
                     {{ form.event_name }}
                     {{ form.event_name.label }}
                 </div>
                 <div class="input-field col s3">
-                    <i class="material-icons prefix">event</i>
+                    <i class="material-icons prefix">location_on</i>
+                    {{ form.venue }}
+                    {{ form.venue.label }}
+                </div>
+                <div class="input-field col s3">
+                    <i class="material-icons prefix">access_time</i>
                     {{ form.start_time }}
                     {{ form.start_time.label }}
                 </div>
                 <div class="input-field col s3">
-                    <i class="material-icons prefix">event</i>
+                    <i class="material-icons prefix">access_time</i>
                     {{ form.end_time }}
                     {{ form.end_time.label }}
                 </div>

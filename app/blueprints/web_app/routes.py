@@ -82,6 +82,9 @@ def create_announcement():
         db.session.refresh(announcement)
 
         # Process the form to get recipients
+        # Check the boxes that have been checked
+
+
         stds = AppInstance.query.all()
         tokens = []
         

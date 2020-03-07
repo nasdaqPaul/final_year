@@ -77,15 +77,16 @@ class School(db.Model):
     name = db.Column(db.String(64), nullable=False)
     staffs = db.relationship('Staff', backref='school', lazy=False)
 
-#
-#
-def initialize_database(*args, **kwargs):
+####
+
+
+def initialize_database():
     # Staffs
     staff1 = Staff(first_name="Washington", last_name="Oluoch", level=1, department_code='001', school_code='001', role="HOD", staff_id="staff_001")
     staff2 = Staff(first_name="Raphael", last_name="Kaibiru", level=3, department_code='001', school_code='001', role="Project Coordinator", staff_id="staff_002")
     # Students
-    student1 = Student(adm_number='J17-9030-2016', first_name="Paul", last_name="Nasdaq", admission_year=2016, middle_name="Odhiambo", course="Computer Science")
-    student2 = Student(adm_number='J17-9031-2016', first_name="Silla", last_name="Montella", admission_year=2016, middle_name="Dienya", course="Medicine")
+    student1 = Student(department="J17", admission_year=2016, number=9030, first_name="Paul", last_name="Nasdaq", middle_name="Odhiambo")
+    student2 = Student(department="J77", number=9031, first_name="Silla", last_name="Montella", admission_year=2016, middle_name="Dienya")
 
     # Departments and schools
     eng_tech = School(school_code='001', name="Engineering and Technology")
