@@ -14,7 +14,6 @@ def user_loader(id):
 class Staff(db.Model, UserMixin):
     __tablename__ = 'staffs'
 
-
     staff_id = db.Column(db.String(64), primary_key=True)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
@@ -82,6 +81,7 @@ class School(db.Model):
 
 def initialize_database():
     # Staffs
+
     staff1 = Staff(first_name="Washington", last_name="Oluoch", level=1, department_code='001', school_code='001', role="HOD", staff_id="staff_001")
     staff2 = Staff(first_name="Raphael", last_name="Kaibiru", level=3, department_code='001', school_code='001', role="Project Coordinator", staff_id="staff_002")
     # Students
@@ -99,10 +99,10 @@ def initialize_database():
     staff2_account = StaffAccount(username=staff2.staff_id)
     staff2_account.set_password("1234")
 
-    student1_account = StudentAccount(adm_number=student1.adm_number)
+    student1_account = StudentAccount(department=student1.department, number=student1.number, admission_year=student1.admission_year)
     student1_account.set_password("1234")
 
-    student2_account = StudentAccount(adm_number=student2.adm_number)
+    student2_account = StudentAccount(department=student2.department,number=student2.number, admission_year=student2.admission_year)
     student2_account.set_password("1234")
 
     db.session.add_all([staff1, staff2, student1, student2, staff1_account, student2_account, student1_account, student2_account, eng_tech, comp_science])

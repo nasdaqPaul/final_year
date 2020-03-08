@@ -46,7 +46,7 @@ class AppInstance(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     admission_year = db.Column(db.Integer, primary_key=True)
 
-    db.ForeignKeyConstraint([department, number, admission_year], [Student.department, Student.number, Student.admission_year])
+    db.ForeignKeyConstraint([department, number, admission_year], [StudentAccount.department, StudentAccount.number, StudentAccount.admission_year])
 
     token = db.Column(db.String(240), nullable=False)
     account = db.relationship('StudentAccount', back_populates='app', uselist=False)
