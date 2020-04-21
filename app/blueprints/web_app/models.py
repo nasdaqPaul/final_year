@@ -5,10 +5,9 @@ from flask_login import UserMixin
 import datetime
 
 
-
 @login_manager.user_loader
-def user_loader(id):
-    return Staff.query.get(id)
+def user_loader(user_id):
+    return Staff.query.get(user_id)
 
 
 class Staff(db.Model, UserMixin):
@@ -34,8 +33,9 @@ class Staff(db.Model, UserMixin):
 class StaffAccount(db.Model):
     __tablename__ = 'staff_accounts'
     username = db.Column(db.String, db.ForeignKey('staffs.staff_id'), primary_key=True)
-    owner = db.relationship('Staff', back_populates='account', uselist=False)
     password = db.Column(db.String(120), nullable=False)
+
+    owner = db.relationship('Staff', back_populates='account', uselist=False)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -66,12 +66,14 @@ class Event(db.Model):
 
 class Department(db.Model):
     __tablename__ = 'departments'
+    
     department_code = db.Column(db.CHAR(3), primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     staffs = db.relationship('Staff', backref='department', lazy=False)
 
 class School(db.Model):
     __tablename__ = 'schools'
+
     school_code = db.Column(db.CHAR(3), primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     staffs = db.relationship('Staff', backref='school', lazy=False)
@@ -105,5 +107,5 @@ def initialize_database():
     student2_account = StudentAccount(department=student2.department,number=student2.number, admission_year=student2.admission_year)
     student2_account.set_password("1234")
 
-    db.session.add_all([staff1, staff2, student1, student2, staff1_account, student2_account, student1_account, student2_account, eng_tech, comp_science])
+    db.session.add_all([staff1, staff2, student1, student2, staff1_account, staff2_account, student2_account, student1_account, student2_account, eng_tech, comp_science])
     db.session.commit()

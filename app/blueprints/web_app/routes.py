@@ -5,7 +5,7 @@ from app.blueprints.mobile.models import AppInstance
 from app import login_manager, db
 from werkzeug.urls import url_parse
 from flask_login import login_required, login_user, logout_user, current_user
-
+from app.blueprints.mobile.models import Student
 
 web = Blueprint('web', __name__, template_folder='templates', static_folder='static', static_url_path='/web/static')
 login_manager.login_view = 'web.login'
@@ -16,11 +16,13 @@ login_manager.login_view = 'web.login'
 def index():
     return render_template("index.html", title='Home')
 
+
 @web.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('web.index'))
+
 
 @web.route("/login", methods=['POST', 'GET'])
 def login():
@@ -29,7 +31,7 @@ def login():
     if loginForm.validate_on_submit():
         staff = Staff.query.get(loginForm.username.data)
         if (staff == None):
-            flash ("User with that ID does not exist in the database, please contact Admin for help")
+            flash("User with that ID does not exist in the database, please contact Admin for help")
             return render_template('login.html', form=loginForm, title='Log in')
         elif (staff.account == None):
             flash("User does not have an account, register to proceed")
@@ -43,9 +45,10 @@ def login():
             flash("Welcome")
             return redirect(next_page)
         else:
-            flash ("Wrong username or password")
+            flash("Wrong username or password")
             return render_template('login.html', form=loginForm, title='Login')
     return render_template('login.html', form=loginForm, title='Log in')
+
 
 @web.route('/register', methods=['POST', 'GET'])
 def register():
@@ -66,7 +69,7 @@ def register():
             db.session.commit()
             flash("Registration successfull!!")
             return redirect('/login')
-    
+
     return render_template('register.html', message=None, title='Register', form=form)
 
 
@@ -77,29 +80,109 @@ def create_announcement():
 
     if form.validate_on_submit():
         announcement = Announcement(title=form.title.data, content=form.content.data, sender_id=current_user.get_id())
-        db.session.add(announcement)
-        db.session.commit()
-        db.session.refresh(announcement)
+        tokens = []
+
+        if form.uni_forth_year.data:
+            # all forth years in Machakos University
+            print("UniForthYear")
+            for student in Student.query.filter_by(admission_year=2016):
+                tokens.append(student.account.app.token)
+        if form.uni_second_year.data:
+            # second years in machakos university
+            print("UniSecondYear")
+            for student in Student.query.filter_by(admission_year=2017):
+                tokens.append(student.account.app.token)
+        if form.uni_third_year.data:
+            # All third years in Machakos University
+            print("UniThirdYear")
+            for student in Student.query.filter_by(admission_year=2018):
+                tokens.append(student.account.app.token)
+        if form.uni_first_year.data:
+            # All firsy years in Machakos University
+            print("UniFirstYear")
+            for student in Student.query.filter_by(admission_year=2019):
+                tokens.append(student.account.app.token)
+
+        if form.sch_forth_year.data:
+            print("SchForthYear")
+            if form.uni_forth_year.data:
+                pass
+            else:
+                # All forth years in that department
+                print("School 4th year checked")
+        if form.sch_third_year.data:
+            print("SchThirdYear")
+            if form.uni_third_year.data:
+                pass
+            else:
+                # All third years in that school
+                print("School 3rd is checked")
+        if form.sch_second_year.data:
+            print("SchSecondYear")
+            if form.dpt_second_year.data:
+                pass
+            else:
+                # All second years in that school
+                print("School 2nd is checked")
+        if form.sch_first_year.data:
+            print("SchFirstYear")
+            if form.uni_first_year.data:
+                pass
+            else:
+                # All first years in that school
+                print("School 1st is checked")
+
+        if form.dpt_forth_year.data:
+            if form.uni_forth_year.data or form.sch_forth_year.data:
+                pass
+            else:
+                # All forth years in that department
+                # for student in Student.query.filter_by():
+                print("Department 4th is checked")
+        if form.dpt_third_year.data:
+            if form.uni_third_year.data or form.sch_third_year.data:
+                pass
+            else:
+                # All third years in that department
+                print("Department 3rd is checked")
+        if form.dpt_second_year.data:
+            if form.uni_second_year.data or form.sch_second_year.data:
+                pass
+            else:
+                # All second years in that department
+                print("Department 2nd is checked")
+        if form.dpt_first_year.data:
+            if form.uni_first_year.data or form.sch_first_year.data:
+                pass
+            else:
+                # All first years in that department
+                print("Department 1st is checked")
+
+        # db.session.add(announcement)
+        # db.session.commit()
+        # db.session.refresh(announcement)
 
         # Process the form to get recipients
         # Check the boxes that have been checked
 
-
-        stds = AppInstance.query.all()
-        tokens = []
-        
-        for instance in stds:
-            tokens.append(instance.token)
-        from app.google_fcm.messaging import send_multicast, send_to_token
-
-        
-        send_multicast(tokens=tokens, data= {
-            "instruction" : "download_announcement",
-            "message_id": str(announcement.id)
-        })
-
-        flash ("Message sent!!")
+        # stds = AppInstance.query.all()
+        # tokens = []
+        #
+        # for instance in stds:
+        #     tokens.append(instance.token)
+        # from app.google_fcm.messaging import send_multicast, send_to_token
+        #
+        #
+        # send_multicast(tokens=tokens, data= {
+        #     "instruction" : "download_announcement",
+        #     "message_id": str(announcement.id)
+        # })
+        print(tokens)
+        print(f"Announcement: {announcement.title}")
+        print(f"Form data: {form.uni_second_year.data}")
+        flash("Message sent!!")
     return render_template('create_announcement.html', title="Create Announcement", form=form)
+
 
 @web.route('/create_event', methods=['GET', 'POST'])
 @login_required

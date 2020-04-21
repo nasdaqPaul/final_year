@@ -6,47 +6,49 @@ from app import db
 mobile = Blueprint('mobile', __name__)
 
 
-@mobile.route('/validate_student', methods=['POST'])
+@mobile.route('/login_student', methods=['POST'])
 def login_student():
+    login_data = request.get_json()
+    department = login_data.get("department")
 
-    adm_number = request.form.get('adm_number')
-    password = request.form.get('password')
+    try:
+        number = int(login_data.get("number"))
+        admission_year = int(login_data.get("admission_year"))
 
-    # print('Adm Number: ' + adm_number + ' Password: ' + password): DEBUG
+    except ValueError:
+        print("Type Error")
+        return jsonify({
+            "Error": "WrongAdmFormat"
+        })
 
-    student = Student.query.filter_by(adm_number=adm_number).first()
-    # print(student): DEBUG
-    if (student == None):
-        return '3'
+    student = Student.query.filter_by(department=department, number=number, admission_year=admission_year).first()
 
-    elif (student.account == None):
-        return '2'
-
-    elif (student.account.check_password(password)):
-        return '0'
-
+    if student is None:
+        return jsonify({
+            "Error": "StudentNotFound"
+        })
+    elif student.account is None:
+        return jsonify({
+            "Error": "StudentNotRegistered"
+        })
+    elif student.account.check_password(login_data.get("password")) is not True:
+        return jsonify({
+            "Error": "WrongPassword"
+        })
     else:
-        return '1'
+        app_instance = AppInstance.query.filter_by(department=department, number=number, admission_year=admission_year).first()
+        if app_instance is None:
+            app_instance = AppInstance(department=department, number=number, admission_year=admission_year, token=login_data.get("instance_token"))
 
+        db.session.add(app_instance)
+        db.session.commit()
 
-@mobile.route("/register_student/<adm_number>/<token>")
-def register_student(adm_number, token):
-    # print('Adm Number: ' + adm_number + "| Token: " + token): DEBUG
-    student = Student.query.get(adm_number)
-    app_instance = AppInstance.query.get(adm_number)
-
-    if app_instance == None:
-        app_instance = AppInstance(adm_number=adm_number, token=token)
-    else:
-        app_instance.token = token
-
-    db.session.add(app_instance)
-    db.session.commit()
-
-    return jsonify({
-        "first_name": student.first_name,
-        "last_name": student.last_name
-    })
+        return jsonify({
+            "Error": "None",
+            "firstName": student.first_name,
+            "lastName": student.last_name,
+            "middleName": student.middle_name, # More data to send later, if needed by client mobile
+        })
 
 
 @mobile.route("/get_announcement/<message_id>")
