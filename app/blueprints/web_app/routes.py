@@ -188,5 +188,5 @@ def create_announcement():
 @login_required
 def create_event():
     form = EventForm()
-
+    print(form.description.data)
     return render_template('create_event.html', title="Create Event", form=form)

@@ -20,7 +20,7 @@
                 <a href="#user"><img class="circle" src="https://picsum.photos/id/237/200/300"></a>
                 <a href="#name"><span
                         class="name">{{ current_user.first_name + " " + current_user.last_name }}</span></a>
-                <p>{{ current_user.department.name }}<br/><span class="red-text">{{ current_user.role }}</span></p>
+{#                <p>{{ current_user.department.name }}<br/><span class="red-text">{{ current_user.role }}</span></p>#}
             </div>
         </li>
         <li>
@@ -38,15 +38,6 @@
 
     </ul>
     <main>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
         {% block content %}{% endblock %}
     </main>
 {% endblock %}

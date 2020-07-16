@@ -45,6 +45,8 @@ class EventForm(FlaskForm):
     event_name = StringField("Event Name", [DataRequired()])
     venue = StringField("Venue", [DataRequired()])
     description = TextAreaField("Event Description")
-    start_time = DateTimeField("Starts at", format="'%Y-%m-%d %H:%M:%S'")
+    date = StringField('Date')
+    start_time = StringField('Starts at', [DataRequired()])
     end_time = DateTimeField("End at", format="'%Y-%m-%d %H:%M:%S'")
+
     submit = SubmitField("Create Event")
