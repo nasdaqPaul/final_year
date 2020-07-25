@@ -146,6 +146,20 @@ def announcement_recipient():
     return render_template('recipients_announcements.html', permitted_courses=recipients)
 
 
+@web.route('/save_announcement_rc', methods=['POST'])
+@login_required
+def save_announcement_rc():
+    recipient_data = request.get_json()
+    print(recipient_data)
+    return jsonify('Success');
+
+
+@web.route('/announcement_preview')
+@login_required
+def announcement_preview():
+    return render_template('announcement_preview.html')
+
+
 @web.route('/get_students')
 @login_required
 def get_students():

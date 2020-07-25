@@ -17,6 +17,7 @@
             max-height: 50vh;
             overflow-y: auto;
         }
+
         .card h5 {
             padding-top: 20px;
         }
@@ -28,14 +29,14 @@
 <header>
     <div class="navbar-fixed">
         <nav>
-        <div class="nav-wrapper ">
-            <a href="#" class="brand-logo">FinalYear</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/logout"><i class="material-icons right">account_circle</i>Log Out</a></li>
-            </ul>
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        </div>
-    </nav>
+            <div class="nav-wrapper ">
+                <a href="#" class="brand-logo">FinalYear</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/logout"><i class="material-icons right">account_circle</i>Log Out</a></li>
+                </ul>
+                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            </div>
+        </nav>
     </div>
 </header>
 
@@ -57,7 +58,7 @@
     <li><a class="subheader">Actions</a></li>
 
     <li><a href="/create_event"><i class="material-icons">event</i>Create new event</a></li>
-    <li class="active"><a href="/createAnnouncement"><i class="material-icons">announcement</i>Create new
+    <li class="active"><a href="/create_announcement"><i class="material-icons">announcement</i>Create new
         announcement</a></li>
     <li>
         <div class="divider"></div>
@@ -143,11 +144,11 @@
             <div id="custom_{{ permitted_course.course.course_code }}" class="col s12 rd">
                 <table id="custom_table_{{ permitted_course.course.course_code }}" class="hide">
                     <thead>
-                        <tr>
-                            <th>Admission Number</th>
-                            <th>Student Name</th>
-                            <th>Select Student</th>
-                        </tr>
+                    <tr>
+                        <th>Admission Number</th>
+                        <th>Student Name</th>
+                        <th>Select Student</th>
+                    </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -211,7 +212,7 @@
         <li class=""><a href="/create_announcement"><i class="material-icons">chevron_left</i></a></li>
         <li class=""><a href="/create_announcement">Edit</a></li>
         <li class="active" id="rep"><a href="#">Recipients</a></li>
-        <li class="waves-effect"><a id="send" href="#!">Send</a></li>
+        <li class="waves-effect"><a id="send" href="/announcement_preview">Send</a></li>
         <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
     </ul>
 </main>
@@ -244,7 +245,7 @@
                     two_at_{{ pc.course.course_code }}.prop('checked', true);
                     three_at_{{ pc.course.course_code }}.prop('checked', true);
                     four_at_{{ pc.course.course_code }}.prop('checked', true);
-                    express['{{ pc.course.course_code }}'] = [1,2,3,4]
+                    express['{{ pc.course.course_code }}'] = [1, 2, 3, 4]
                 } else {
                     one_at_{{ pc.course.course_code }}.prop('checked', false);
                     two_at_{{ pc.course.course_code }}.prop('checked', false);
@@ -260,8 +261,7 @@
                 }
                 if ($(this).prop('checked')) {
                     express['{{ pc.course.course_code }}'].push(1);
-                }
-                else {
+                } else {
                     express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(1), 1);
                 }
             });
@@ -271,8 +271,7 @@
                 }
                 if ($(this).prop('checked')) {
                     express['{{ pc.course.course_code }}'].push(2);
-                }
-                else {
+                } else {
                     express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(2), 1);
                 }
             });
@@ -282,8 +281,7 @@
                 }
                 if ($(this).prop('checked')) {
                     express['{{ pc.course.course_code }}'].push(3);
-                }
-                else {
+                } else {
                     express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(3), 1);
                 }
             });
@@ -293,8 +291,7 @@
                 }
                 if ($(this).prop('checked')) {
                     express['{{ pc.course.course_code }}'].push(4);
-                }
-                else {
+                } else {
                     express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(4), 1);
                 }
             });
@@ -302,16 +299,14 @@
             custom_tab_button_{{ pc.course.course_code }}.one('click', function () {
                 $.getJSON('/get_students', {course_code: '{{ pc.course.course_code }}'}, function (data) {
                     const table_body = $('#custom_table_{{ pc.course.course_code }}');
-                    table_body.removeClass('hide');
-                    console.log(data.length)
-                    $('#custom_loader_{{ pc.course.course_code }}').addClass('hide');
                     data.forEach(function (student, index) {
                         table_body.find($('tbody')).append(`<tr><td>${student.adm_number}</td><td>${student.name}</td><td><label>
                         <input type="checkbox" class="filled-in custom_student" value="${student.adm_number}"/>
                         <span></span>
                         </label></td></tr>`);
                     });
-
+                    table_body.removeClass('hide');
+                    $('#custom_loader_{{ pc.course.course_code }}').addClass('hide');
                     $('#custom_{{ pc.course.course_code }} .custom_student').on('click', function () {
                         if ($(this).prop('checked')) {
                             custom_students.push($(this).attr('value'));
@@ -324,20 +319,33 @@
                 });
             });
         {% endfor %}
-        $('#send').on('click', function () {
+        $('#send').on('click', function (e) {
             let not_empty_express = false;
             Object.keys(express).forEach(function (course) {
-                if (express[course].length !== 0){
+                if (express[course].length !== 0) {
                     not_empty_express = true;
                 }
             });
-            if (custom_students.length !== 0 || not_empty_express){
+            if (custom_students.length !== 0 || not_empty_express) {
+                // Send data to server
+                $.ajax({
+                    url: '/save_announcement_rc',
+                    type: 'POST',
+                    data: JSON.stringify({custom_students, express}),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    async: true,
+                    success: function (msg) {
+                        console.log(msg);
+                    }
+                })
                 return;
             }
 
             M.toast({
                 html: "Recipients cannot be empty"
             });
+            e.preventDefault();
         });
     });
 </script>

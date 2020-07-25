@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <title>{{ title or 'Final Year' }}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {#        <link type="text/css" rel="stylesheet" href="{{ url_for ('web.static', filename='simditor/styles/app.css') }}">#}
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('web.static', filename='simditor/styles/simditor.css') }}">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('.static', filename='css/materialize.css') }}"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('web.static', filename='css/style.css') }}">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+<header>
+    <nav>
+        <div class="nav-wrapper ">
+            <a href="#" class="brand-logo">FinalYear</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/logout"><i class="material-icons right">account_circle</i>Log Out</a></li>
+            </ul>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+</header>
+<ul id="slide-out" class="sidenav sidenav-fixed invisible grey lighten-3">
+    <li>
+        <div class="user-view ">
+            {#                <div class="background grey">#}
+            {#                  <img src="https://picsum.photos/seed/picsum/200/300">#}
+            {#                </div>#}
+            <a href="#user"><img class="circle" src="https://picsum.photos/id/237/200/300"></a>
+            <a href="#name"><span
+                    class="name">{{ current_user.first_name + " " + current_user.last_name }}</span></a>
+            {#                <p>{{ current_user.department.name }}<br/><span class="red-text">{{ current_user.role }}</span></p>#}
+        </div>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Actions</a></li>
+
+    <li><a href="/create_event"><i class="material-icons">event</i>Create new event</a></li>
+    <li class="active"><a href="/createAnnouncement"><i class="material-icons">announcement</i>Create new
+        announcement</a></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Subheader</a></li>
+    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+
+</ul>
+<main>
+    <h1 class="center-align">Preview and Send</h1>
+    <div class="card">
+        <p>kdjfl</p>
+    </div>
+    <ul class="pagination center">
+            <li><a href="/announcement_recipient"><i class="material-icons">chevron_left</i></a></li>
+            <li class=""><a href="/create_announcement">Edit</a></li>
+            <li class="waves-effect" ><a href="/announcement_recipient">Recipients</a></li>
+            <li class="active"><a href="#!">Send</a></li>
+            <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+</main>
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="{{ url_for('.static', filename='js/jQuery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('.static', filename='js/materialize.js') }}"></script>
+
+<script>
+    {% with messages=get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                M.toast({html: '{{ message }}'});
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+
+    });
+</script>
+
+</body>
+</html>
