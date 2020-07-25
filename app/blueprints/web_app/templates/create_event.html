@@ -60,12 +60,12 @@
 
             {{ form.hidden_tag() }}
             <div class="row">
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m6">
                     <i class="material-icons prefix">add</i>
                     {{ form.event_name(id='event_name') }}
                     {{ form.event_name.label }}
                 </div>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m6">
                     <i class="material-icons prefix">location_on</i>
                     {{ form.venue(id='venue') }}
                     {{ form.venue.label }}
@@ -94,12 +94,12 @@
             </div>
         </section>
     </form>
-
+    <hr>
     <ul class="pagination center">
         <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-        <li class="active"><a href="#!">Create</a></li>
-        <li class="waves-effect" id="rep"><a href="#!">Recipients</a></li>
-        <li class="waves-effect"><a href="#!">Preview</a></li>
+        <li class="active"><a href="#!">Edit</a></li>
+        <li class="waves-effect" id="rep"><a>Recipients</a></li>
+        <li class="disabled"><a href="#!">Send</a></li>
         <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
     </ul>
 </main>
@@ -120,8 +120,11 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    $(document).ready(function () {
 
+    $(document).ready(function () {
+        $("#event_form :input, #editor").change(function () {
+            $('#event_form').data('changed', true);
+        });
         const event_name = document.getElementById('event_name');
         const event_date = document.getElementById('date');
         const start_time = document.getElementById('start_time');
@@ -133,9 +136,7 @@
         M.Datepicker.init(event_date, {
             minDate: new Date()
         });
-        M.Timepicker.init(document.querySelectorAll('.timepicker'), {
-
-        });
+        M.Timepicker.init(document.querySelectorAll('.timepicker'), {});
         // Initialize the sidebars
         $('.sidenav').sidenav();
         Simditor.locale = 'en-US';
@@ -163,31 +164,60 @@
             ],
             allowedTags: ['br', 'span', 'a', 'img', 'b', 'strong', 'i', 'strike', 'u', 'font', 'p', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'h1', 'h2', 'h3', 'h4', 'hr']
         });
+        editor.on('valuechanged', function (e, src) {
+            if ($('#event_form').data('changed')){
+                return;
+            }
+            else {
+                $('#event_form').data('changed', true);
+            }
+        });
 
+        // Event listener for clicking the recipients link
         $('#rep').click(function () {
             // Validate pass 1: Check for empty string
             if (event_name.value.trim() == '') {
-                M.toast({html: "<strong>Event Name must be filled</strong>", displayLength: 2000, classes: "teal white-text rounded"});
+                M.toast({
+                    html: "<strong>Event Name must be filled</strong>",
+                    displayLength: 2000,
+                    classes: "teal white-text rounded"
+                });
                 event_name.focus();
                 return;
             }
             if (event_venue.value.trim() == '') {
-                M.toast({html: '<strong>Event Venue cannot be empty</strong>', displayLength: 2000, classes: "teal white-text rounded"});
+                M.toast({
+                    html: '<strong>Event Venue cannot be empty</strong>',
+                    displayLength: 2000,
+                    classes: "teal white-text rounded"
+                });
                 event_venue.focus();
                 return;
             }
             if (event_date.value == '') {
-                M.toast({html: "<strong>Event Date must be filled</strong>", displayLength: 2000, classes: "teal white-text rounded"});
+                M.toast({
+                    html: "<strong>Event Date must be filled</strong>",
+                    displayLength: 2000,
+                    classes: "teal white-text rounded"
+                });
                 M.Datepicker.getInstance(event_date).open();
                 return;
             }
             if (start_time.value.trim() == '') {
-                M.toast({html: '<strong>Start time must be filled</strong>', displayLength: 2000, classes: "teal white-text rounded"});
+                M.toast({
+                    html: '<strong>Start time must be filled</strong>',
+                    displayLength: 2000,
+                    classes: "teal white-text rounded"
+                });
                 M.Timepicker.getInstance(start_time).open();
                 return;
             }
             if (end_time.value.trim() == '') {
-                M.toast({html: '<strong>End time must be filled</strong>', displayLength: 2000, classes: "teal white-text rounded"});
+                M.toast({
+                    html: '<strong>End time must be filled</strong>',
+                    displayLength: 2000,
+                    classes: "teal white-text rounded"
+                });
                 M.Timepicker.getInstance(end_time).open();
                 return;
             }
@@ -197,13 +227,11 @@
                 return;
             }
             // Validate pass 2: Check formats of date and time
-            let date_selected = event_date.value.trim().toUpperCase();
-            let sTime_selected = start_time.value.trim().toUpperCase();
-            let eTime_selected = end_time.value.trim().toUpperCase();
+            // TODO
 
-
-            console.log(date_selected, sTime_selected, eTime_selected);
+            $('#event_form').attr('action', '/save_event/event_recipient');
             $('#event_form').submit();
+
         });
     });
 </script>
