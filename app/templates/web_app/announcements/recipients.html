@@ -1,0 +1,281 @@
+{% extends 'web_app/announcements/layout.html' %}
+{% block content %}
+    <h1 class="center">Create Announcement</h1>
+    <hr>
+    <h4 class="center-align blue-text text-darken-1">Select Recipients</h4>
+    <ul class="collapsible">
+        {% for permitted_course in permitted_courses %}
+            <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{ permitted_course.course.name }}</div>
+                <div class="row collapsible-body">
+                <div class="row">
+                    <ul class="tabs">
+                        <li class="tab col s6"><a class="active"
+                                                  href="#express_{{ permitted_course.course.course_code }}">Express</a>
+                        </li>
+                        <li class="tab col s6"><a id="custom_tab_button_{{ permitted_course.course.course_code }}"
+                                                  href="#custom_{{ permitted_course.course.course_code }}">Custom</a>
+                        </li>
+                    </ul>
+                </div>
+
+            <!-- Express Tab -->
+            <div id="express_{{ permitted_course.course.course_code }}" class="col s12">
+                <div class="row">
+                    <p class="col s12">
+                        <label>
+                            <input type="checkbox" id="all_at_{{ permitted_course.course.course_code }}"/>
+                            <span>All levels</span>
+                        </label>
+                    </p>
+                </div>
+                <div class="row">
+                    <p class="col s3">
+                        <label>
+                            <input id='one_at_{{ permitted_course.course.course_code }}' type="checkbox"/>
+                            <span>First Years</span>
+                        </label>
+                    </p>
+                    <p class="col s3">
+                        <label>
+                            <input id='two_at_{{ permitted_course.course.course_code }}' type="checkbox"/>
+                            <span>Second Years</span>
+                        </label>
+                    </p>
+                    <p class="col s3">
+                        <label>
+                            <input id='three_at_{{ permitted_course.course.course_code }}' type="checkbox"/>
+                            <span>Third Years</span>
+                        </label>
+                    </p>
+                    <p class="col s3">
+                        <label>
+                            <input id='four_at_{{ permitted_course.course.course_code }}' type="checkbox"/>
+                            <span>Forth Years</span>
+                        </label>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Custom Tab -->
+            <div id="custom_{{ permitted_course.course.course_code }}" class="col s12 rd">
+                <table id="custom_table_{{ permitted_course.course.course_code }}" class="hide">
+                    <thead>
+                    <tr>
+                        <th>Admission Number</th>
+                        <th>Student Name</th>
+                        <th>Select Student</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <div id="custom_loader_{{ permitted_course.course.course_code }}">
+                    <p>Please wait while we query the database....</p>
+                    <div class="preloader-wrapper big active center-align">
+                        <div class="spinner-layer spinner-blue">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-red">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-yellow">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-green">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block footer %}
+    <footer class="page-footer z-depth-5 white">
+        <ul class="pagination center">
+            <li class=""><a href="{{ url_for('web_announcements.create') }}"><i class="material-icons">chevron_left</i></a>
+            </li>
+            <li class=""><a href="{{ url_for('web_announcements.create') }}">Edit</a></li>
+            <li class="active" id="recipients"><a href="#">Recipients</a></li>
+            <li class="waves-effect"><a id="send" href="/announcement_preview">Send</a></li>
+            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+        <div class="footer-copyright">
+            <div class=" black-text">
+                © 2020 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('.tabs').tabs();
+            $('.collapsible').collapsible();
+
+            const custom_students = [];
+            const express = {};
+
+            {% for pc in permitted_courses %}
+                const custom_tab_button_{{ pc.course.course_code }} = $('#custom_tab_button_{{ pc.course.course_code }}');
+                const all_at_{{ pc.course.course_code }} = $('#all_at_{{pc.course.course_code }}');
+                const one_at_{{ pc.course.course_code }} = $('#one_at_{{ pc.course.course_code }}');
+                const two_at_{{ pc.course.course_code }} = $('#two_at_{{ pc.course.course_code }}');
+                const three_at_{{ pc.course.course_code }} = $('#three_at_{{ pc.course.course_code }}');
+                const four_at_{{ pc.course.course_code }} = $('#four_at_{{ pc.course.course_code }}');
+
+                express['{{ pc.course.course_code }}'] = [];
+
+                all_at_{{ pc.course.course_code }}.on('click', function () {
+                    // Check self for true or false
+                    if ($(this).prop('checked')) {
+                        one_at_{{ pc.course.course_code }}.prop('checked', true);
+                        two_at_{{ pc.course.course_code }}.prop('checked', true);
+                        three_at_{{ pc.course.course_code }}.prop('checked', true);
+                        four_at_{{ pc.course.course_code }}.prop('checked', true);
+                        express['{{ pc.course.course_code }}'] = [1, 2, 3, 4]
+                    } else {
+                        one_at_{{ pc.course.course_code }}.prop('checked', false);
+                        two_at_{{ pc.course.course_code }}.prop('checked', false);
+                        three_at_{{ pc.course.course_code }}.prop('checked', false);
+                        four_at_{{ pc.course.course_code }}.prop('checked', false);
+                        express['{{ pc.course.course_code }}'] = [];
+                    }
+
+                });
+                one_at_{{ pc.course.course_code }}.on('click', function () {
+                    if (all_at_{{ pc.course.course_code }}.prop('checked')) {
+                        all_at_{{ pc.course.course_code }}.prop('checked', false);
+                    }
+                    if ($(this).prop('checked')) {
+                        express['{{ pc.course.course_code }}'].push(1);
+                    } else {
+                        express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(1), 1);
+                    }
+                });
+                two_at_{{ pc.course.course_code }}.on('click', function () {
+                    if (all_at_{{ pc.course.course_code }}.prop('checked')) {
+                        all_at_{{ pc.course.course_code }}.prop('checked', false);
+                    }
+                    if ($(this).prop('checked')) {
+                        express['{{ pc.course.course_code }}'].push(2);
+                    } else {
+                        express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(2), 1);
+                    }
+                });
+                three_at_{{ pc.course.course_code }}.on('click', function () {
+                    if (all_at_{{ pc.course.course_code }}.prop('checked')) {
+                        all_at_{{ pc.course.course_code }}.prop('checked', false);
+                    }
+                    if ($(this).prop('checked')) {
+                        express['{{ pc.course.course_code }}'].push(3);
+                    } else {
+                        express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(3), 1);
+                    }
+                });
+                four_at_{{ pc.course.course_code }}.on('click', function () {
+                    if (all_at_{{ pc.course.course_code }}.prop('checked')) {
+                        all_at_{{ pc.course.course_code }}.prop('checked', false);
+                    }
+                    if ($(this).prop('checked')) {
+                        express['{{ pc.course.course_code }}'].push(4);
+                    } else {
+                        express['{{ pc.course.course_code }}'].splice(express['{{ pc.course.course_code }}'].indexOf(4), 1);
+                    }
+                });
+
+                custom_tab_button_{{ pc.course.course_code }}.one('click', function () {
+                    $.getJSON('/web/announcements/get_students', {course_code: '{{ pc.course.course_code }}'}, function (data) {
+                        const table_body = $('#custom_table_{{ pc.course.course_code }}');
+                        data.forEach(function (student, index) {
+                            table_body.find($('tbody')).append(`<tr><td>${student.adm_number}</td><td>${student.name}</td><td><label>
+                        <input type="checkbox" class="filled-in custom_student" value="${student.adm_number}"/>
+                        <span></span>
+                        </label></td></tr>`);
+                        });
+                        table_body.removeClass('hide');
+                        $('#custom_loader_{{ pc.course.course_code }}').addClass('hide');
+                        $('#custom_{{ pc.course.course_code }} .custom_student').on('click', function () {
+                            if ($(this).prop('checked')) {
+                                custom_students.push($(this).attr('value'));
+                                console.log(custom_students);
+                            } else {
+                                custom_students.splice(custom_students.indexOf($(this).attr('value')), 1);
+                                console.log(custom_students);
+                            }
+                        })
+                    });
+                });
+            {% endfor %}
+            $('#send').on('click', function (e) {
+                let not_empty_express = false;
+                Object.keys(express).forEach(function (course) {
+                    if (express[course].length !== 0) {
+                        not_empty_express = true;
+                    }
+                });
+                if (custom_students.length !== 0 || not_empty_express) {
+                    // Send data to server
+                    $.ajax({
+                        url: '/save_announcement_rc',
+                        type: 'POST',
+                        data: JSON.stringify({custom_students, express}),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        async: true,
+                        success: function (msg) {
+                            console.log(msg);
+                        }
+                    })
+                    return;
+                }
+
+                M.toast({
+                    html: "Recipients cannot be empty"
+                });
+                e.preventDefault();
+            });
+        });
+    </script>
+{% endblock %}

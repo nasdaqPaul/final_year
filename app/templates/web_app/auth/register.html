@@ -1,0 +1,28 @@
+{% extends 'web_app/auth/layout.html' %}
+{% block content %}
+    <h1>Register</h1>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="input-field col s12">
+              {{ form.username }}
+              {{ form.username.label }}
+            </div>
+        </div>
+            <div class="row">
+                <div class="input-field col s6">
+                  {{ form.password }}
+                  {{ form.password.label }}
+                </div>
+                <div class="input-field col s6">
+                    {{ form.confirm_password }}
+                    {{ form.confirm_password.label }}
+                </div>
+              </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Register
+                <i class="material-icons right">send</i>
+              </button>
+        </div>
+    </form>
+{% endblock %}

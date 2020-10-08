@@ -1,0 +1,128 @@
+{% extends 'web_app/announcements/layout.html' %}
+{% block css %}
+    <link type="text/css" rel="stylesheet"
+          href="{{ url_for ('static', filename='web_app/simditor/styles/simditor.css') }}">
+{% endblock %}
+{% block content %}
+    <h1 class="center-align">Create Announcementasdas</h1>
+    <form id='announcement_form' method="post" action="/announcement_recipient" class="white card">
+
+        {{ form.hidden_tag() }}
+        <div class="row">
+
+            <div class="input-field col s12">
+                <i class="material-icons prefix">add</i>
+                {{ form.title(id = 'title') }}
+                {{ form.title.label }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">mode_edit</i>
+                {{ form.content(class = "materialize-textarea", id='editor') }}
+            </div>
+
+        </div>
+    </form>
+{% endblock %}
+{% block footer %}
+<footer class="page-footer z-depth-5 white">
+    <ul class="pagination center">
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+        <li class="active"><a href="#!">Edit</a></li>
+        <li class="waves-effect"><a id="recipients">Recipients</a></li>
+        <li class="disabled"><a href="#!">Send</a></li>
+        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    </ul>
+    <div class="footer-copyright">
+        <div class=" black-text">
+            © 2020 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/module.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/uploader.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/hotkeys.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/simditor.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            // Event listener for change of announcement form
+            $("#announcement_form :input").change(function () {
+                $('#event_form').data('changed', true);
+            });
+
+            Simditor.locale = 'en-US';
+            const editor = new Simditor({
+                textarea: $('#editor'),
+                toolbar: [
+                    'title',
+                    'bold',
+                    'italic',
+                    'underline',
+                    'strikethrough',
+                    'fontScale',
+                    'color',
+                    'ol',
+                    'ul',
+                    'blockquote',
+                    'code',
+                    'table',
+                    'link',
+                    'image',
+                    'hr',
+                    'indent',
+                    'outdent',
+                    'alignment',
+                ]
+            });
+            editor.on('valuechanged', function (e, src) {
+                if ($('#announcement_form').data('changed')) {
+                    return;
+                } else {
+                    $('#announcement_form').data('changed', true);
+                }
+            });
+
+            const title = document.getElementById('title');
+            const content = document.getElementById('editor');
+
+            $('#recipients').click(function () {
+                if (title.value.trim() == '') {
+                    M.toast({
+                        html: "<strong>Announcement Title must be filled</strong>",
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    title.focus();
+                    return;
+                }
+
+                if (content.value.trim() == '') {
+                    M.toast({
+                        html: "<strong>No content</strong>",
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    editor.focus();
+                    return;
+                }
+                if ($('#announcement_form').data('changed')) {
+                    // Call save announcement with next_link to render announcement_recipient
+                    $('#announcement_form').attr('action', '/web/announcements/save/web_announcements.recipients');
+                    $('#announcement_form').submit();
+                } else {
+                    $('#recipients').attr('href', '/web/announcements/recipients');
+                    $('#recipients').click();
+                }
+
+            })
+        });
+    </script>
+{% endblock %}

@@ -16,7 +16,7 @@ from __future__ import print_function
 import firebase_admin
 from firebase_admin import credentials, initialize_app, messaging
 
-cred = credentials.Certificate("/home/paul/key2.json")
+cred = credentials.Certificate("/main/paul/key2.json")
 initialize_app(cred)
 
 

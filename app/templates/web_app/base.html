@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title or 'Final Year' }}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('static', filename='web_app/css/materialize.css') }}" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('static', filename='web_app/css/style.css') }}">
+    {% block css %}
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+{% block body %}
+
+{% endblock %}
+<script type="text/javascript" src="{{ url_for('static', filename='web_app/js/jQuery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='web_app/js/materialize.js') }}"></script>
+<script>
+    {% with messages=get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                M.toast({html: '{{ message }}'});
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+    });
+</script>
+{% block js %}
+{% endblock %}
+
+</body>
+</html>

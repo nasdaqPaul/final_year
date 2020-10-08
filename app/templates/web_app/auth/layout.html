@@ -1,0 +1,15 @@
+{% extends 'web_app/base.html' %}
+{% block body %}
+<nav>
+    <div class="nav-wrapper container">
+      <a href="#" class="brand-logo">FinalYear</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{{ url_for('web_auth.login') }}">Log in</a></li>
+        <li><a href="{{ url_for('web_auth.register') }}">Register</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container">
+    {% block content %}{% endblock %}
+</main>
+{% endblock %}

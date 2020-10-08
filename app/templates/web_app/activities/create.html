@@ -1,0 +1,194 @@
+{% extends 'web_app/activities/layout.html' %}
+{% block css %}
+    <link type="text/css" rel="stylesheet"
+          href="{{ url_for ('static', filename='web_app/simditor/styles/simditor.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h2 class="center-align">Create Activity</h2>
+    <hr>
+    <h4 class="center-align blue-text text-darken-1">Edit content</h4>
+
+    <form method="post" id="activity_form">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">add</i>
+                    {{ form.activity_name(id='activity_name') }}
+                    {{ form.activity_name.label }}
+                </div>
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">location_on</i>
+                    {{ form.venue(id='venue') }}
+                    {{ form.venue.label }}
+                </div>
+            </div>
+
+            <div class="row">
+                {{ form.description(id = "editor") }}
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m4">
+                    <i class="material-icons prefix">event</i>
+                    {{ form.date(class='datepicker', id='date') }}
+                    {{ form.date.label }}
+                </div>
+                <div class="input-field col s3 m4">
+                    <i class="material-icons prefix">access_time</i>
+                    {{ form.start_time(class='timepicker', id='start_time') }}
+                    {{ form.start_time.label }}
+                </div>
+                <div class="input-field col s3 m4">
+                    <i class="material-icons prefix">access_time</i>
+                    {{ form.end_time(class='timepicker', id='end_time') }}
+                    {{ form.end_time.label }}
+                </div>
+            </div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+    <footer class="page-footer z-depth-5 white">
+        <ul class="pagination center">
+            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+            <li class="active"><a href="#!">Edit</a></li>
+            <li class="waves-effect"><a id="recipients">Recipients</a></li>
+            <li class="disabled"><a href="#!">Send</a></li>
+            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+        <div class="footer-copyright">
+            <div class=" black-text">
+                © 2020 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/module.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/uploader.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/hotkeys.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='web_app/simditor/scripts/simditor.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            const activity_name = document.getElementById('activity_name');
+            const activity_date = document.getElementById('date');
+            const start_time = document.getElementById('start_time');
+            const end_time = document.getElementById('end_time');
+            const content = document.getElementById('editor');
+            const activity_venue = document.getElementById(('venue'));
+
+            // Materialize inits
+            M.Datepicker.init(activity_date, {
+                minDate: new Date()
+            });
+            M.Timepicker.init(document.querySelectorAll('.timepicker'), {});
+            $('.sidenav').sidenav();
+
+
+            // Simditor inits
+            Simditor.locale = 'en-US';
+            const editor = new Simditor({
+                textarea: $('#editor'),
+                toolbar: [
+                    'title',
+                    'bold',
+                    'italic',
+                    'underline',
+                    'strikethrough',
+                    'fontScale',
+                    'color',
+                    'ol',
+                    'ul',
+                    'blockquote',
+                    'code',
+                    'table',
+                    'link',
+                    'image',
+                    'hr',
+                    'indent',
+                    'outdent',
+                    'alignment',
+                ],
+                allowedTags: ['br', 'span', 'a', 'img', 'b', 'strong', 'i', 'strike', 'u', 'font', 'p', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'h1', 'h2', 'h3', 'h4', 'hr']
+            });
+
+            editor.on('valuechanged', function (e, src) {
+                if ($('#activity_form').data('changed')) {
+                    return;
+                } else {
+                    $('#activity_form').data('changed', true);
+                }
+            });
+            $("#activity_form:input, #editor").change(function () {
+                $('#activity_form').data('changed', true);
+            });
+
+
+            $('#recipients').click(function () {
+                // Validate pass 1: Check for empty string
+                if (activity_name.value.trim() === '') {
+                    M.toast({
+                        html: "<strong>Event Name must be filled</strong>",
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    activity_name.focus();
+                    return;
+                }
+                if (activity_venue.value.trim() === '') {
+                    M.toast({
+                        html: '<strong>Event Venue cannot be empty</strong>',
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    activity_venue.focus();
+                    return;
+                }
+                if (activity_date.value === '') {
+                    M.toast({
+                        html: "<strong>Event Date must be filled</strong>",
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    M.Datepicker.getInstance(activity_date).open();
+                    return;
+                }
+                if (start_time.value.trim() === '') {
+                    M.toast({
+                        html: '<strong>Start time must be filled</strong>',
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    M.Timepicker.getInstance(start_time).open();
+                    return;
+                }
+                if (end_time.value.trim() === '') {
+                    M.toast({
+                        html: '<strong>End time must be filled</strong>',
+                        displayLength: 2000,
+                        classes: "teal white-text rounded"
+                    });
+                    M.Timepicker.getInstance(end_time).open();
+                    return;
+                }
+                if (content.value.trim() === '') {
+                    M.toast({html: "No content"});
+                    editor.focus();
+                    return;
+                }
+                // Validate pass 2: Check formats of date and time
+                // TODO
+
+                $('#activity_form').attr('action', '/web/activities/save/web_activities.recipients');
+                $('#activity_form').submit();
+
+            });
+        });
+    </script>
+{% endblock %}

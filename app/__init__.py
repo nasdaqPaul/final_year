@@ -1,38 +1,55 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from config import Config
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+db = SQLAlchemy()
+login_manager = LoginManager()
+migrate = Migrate()
 
-app = Flask(__name__)
-app.config.from_object(Config)
-
-
-db = SQLAlchemy(app)
-login_manager = LoginManager(app)
-migrate = Migrate(app, db)
-
-from app.blueprints.web_app.routes import web
-from app.blueprints.mobile.routes import mobile
-
-from app.blueprints.web_app.models import initialize_database, Staff, School, Department, StaffAccount, Announcement, Event
-from app.blueprints.mobile.models import Student, StudentAccount, AppInstance
-app.register_blueprint(web)
-app.register_blueprint(mobile)
+# setup models
+# TODO: find a way to put load models in blueprints
+from .web_app import models as web_models
+from .web_app.auth import models as web_auth_models
+from .web_app.announcements import models as web_announcements_models
+from .web_app.activities import models as web_activities_models
+from .mobile.auth import models as mobile_auth_models
 
 
-@app.shell_context_processor
-def make_shell_context():
-    return dict(init_db=initialize_database,
-                Student=Student,
-                StudentAccount=StudentAccount,
-                AppInstance=AppInstance,
-                StaffAccount=StaffAccount,
-                Staff=Staff,
-                Department=Department,
-                School=School,
-                Announcement=Announcement,
-                Event=Event)
-# Literally hav no shit to do...
-#
+def create_app():
+    """Create Flask application."""
+    app = Flask(__name__, instance_relative_config=False)
+    app.config.from_object('config.Config')
+
+    db.init_app(app)
+    login_manager.init_app(app)
+    migrate.init_app(app, db)
+
+    with app.app_context():
+        # Import parts of our application
+        from .web_app.activities import routes as web_activities_routes
+        from .web_app.announcements import routes as web_announcements_routes
+        from .web_app.main import routes as web_main_routes
+        from .web_app.auth import routes as web_auth_routes
+        from .mobile.auth import routes as mobile_auth_routes
+
+        # Register Blueprints
+        app.register_blueprint(web_activities_routes.web_activities)
+        app.register_blueprint(web_announcements_routes.web_announcements)
+        app.register_blueprint(web_main_routes.web_main)
+        app.register_blueprint(web_auth_routes.web_auth)
+        app.register_blueprint(mobile_auth_routes.mobile)
+
+        @app.shell_context_processor
+        def shell_context():
+            return dict(
+                        Student=mobile_auth_models.Student,
+                        StudentAccount=mobile_auth_models.StudentAccount,
+                        AppInstance=mobile_auth_models.AppInstance,
+                        StaffAccount=web_auth_models.StaffAccount,
+                        Staff=web_auth_models.Staff,
+                        Department=web_models.Department,
+                        School=web_models.School,
+                        Announcement=web_announcements_models.Announcement,
+                        Activity=web_activities_models.Activity)
+        return app

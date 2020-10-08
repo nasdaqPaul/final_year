@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <title>{{ title or 'Final Year' }}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {#        <link type="text/css" rel="stylesheet" href="{{ url_for ('web.static', filename='simditor/styles/app.css') }}">#}
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('web.static', filename='simditor/styles/simditor.css') }}">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('.static', filename='css/materialize.css') }}"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('web.static', filename='css/style.css') }}">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        .card {
+            padding-left: 10vh;
+            padding-right: 10vh;;
+            font-family: baskerville;
+        }
+    </style>
+</head>
+
+<body class="grey">
+<header>
+    <div class="navbar-fixed">
+        <nav class="grey lighten-3">
+            <div class="nav-wrapper ">
+                <a href="#" class="brand-logo black-text">FinalYear</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
+            </div>
+        </nav>
+    </div>
+</header>
+<ul id="slide-out" class="sidenav sidenav-fixed invisible grey lighten-3">
+    <li>
+        <div class="user-view ">
+            {#                <div class="background grey">#}
+            {#                  <img src="https://picsum.photos/seed/picsum/200/300">#}
+            {#                </div>#}
+            <a href="#user"><img class="circle" src="https://picsum.photos/id/237/200/300"></a>
+            <a href="#name"><span
+                    class="name">{{ current_user.first_name + " " + current_user.last_name }}</span></a>
+            {#                <p>{{ current_user.department.name }}<br/><span class="red-text">{{ current_user.role }}</span></p>#}
+        </div>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Actions</a></li>
+
+    <li><a href="/create_event"><i class="material-icons">event</i>Create new event</a></li>
+    <li class="active"><a href="/create_announcement"><i class="material-icons">announcement</i>Create new
+        announcement</a></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Your account</a></li>
+    <li ><a class="waves-effect red-text text-darken-4" href="#!">Log Out</a></li>
+
+</ul>
+<main>
+    <h1 class="center-align">Preview and Send</h1>
+    <div class="card">
+        <div class="center-align">
+            <img src="{{ url_for('web.static', filename='img/logo.png') }}" alt="" class="responsive-img">
+            <h1>Machakos University</h1>
+            <h2>Department of Computer Science</h2>
+            <h2>(Academic and Student Affairs)</h2>
+            <hr>
+            <h2>Notice</h2>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col s6"><h5>From: Someone</h5></div>
+                <div class="col s6"><h5>REF: asd/asda</h5></div>
+                <div class="col s6"><h5>To: Someone</h5></div>
+                <div class="col s6"><h5>DATE: 12/12/2020</h5></div>
+            </div>
+            <hr>
+            <div class="row">
+                <h3>Subject: Some Crap</h3>
+            </div>
+            <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At deserunt distinctio doloremque dolores
+                    eos in inventore iure laudantium necessitatibus nemo nesciunt, officia tenetur voluptas. Ad atque
+                    consequuntur culpa dolores eos fuga neque placeat saepe sint. Alias animi aspernatur autem
+                    dignissimos doloribus maxime nostrum possimus quasi tempore vel? Architecto asperiores atque,
+                    distinctio esse est ipsum molestiae pariatur. Aperiam atque dolorem dolorum eligendi eum iure minus
+                    mollitia quis? Aliquam aliquid consequuntur deserunt eius exercitationem magni molestiae numquam
+                    sapiente! At corporis deserunt earum eius itaque iusto nesciunt nihil non totam veritatis! Aperiam
+                    architecto commodi dicta dolore error in incidunt ipsum iusto minus nam natus, neque possimus quas
+                    rerum soluta voluptate voluptatem! Ab alias aperiam assumenda culpa distinctio earum enim, et, eum
+                    impedit incidunt natus nemo obcaecati perferendis quidem quis quos tempore temporibus ut. Atque
+                    blanditiis culpa delectus deserunt ducimus, eaque eos esse et explicabo illo officia officiis porro
+                    rem repudiandae sit soluta, sunt tempore veniam veritatis, vitae. Commodi eos excepturi numquam
+                    pariatur qui. A aliquid aperiam asperiores delectus dolorem eius esse ex harum impedit itaque
+                    molestias nostrum provident quas quia, quis quos rerum. Amet dignissimos dolor ea incidunt itaque
+                    libero magni, nam numquam odit possimus qui quos repellendus, tempore ullam ut. Eaque odit, rerum.
+                    Alias autem est ipsa molestiae nisi odio, possimus qui reiciendis rem repellendus, saepe ut, veniam
+                    voluptas. Aliquid, aperiam asperiores assumenda beatae blanditiis consequuntur, cum cupiditate
+                    deserunt distinctio doloremque dolores doloribus enim esse est, eum eveniet fugiat fugit labore
+                    maiores molestiae necessitatibus nemo neque nihil nobis nostrum numquam odio omnis quas quibusdam
+                    quis repellendus sapiente suscipit tempore unde veritatis voluptate voluptates? Beatae consequuntur
+                    culpa eligendi enim eveniet ex explicabo facilis, fugit necessitatibus placeat quo sapiente sequi
+                    sit ullam voluptate. Alias assumenda blanditiis dolore iure magnam minima! Ab accusamus atque autem
+                    commodi, consequuntur, deleniti distinctio doloribus eligendi inventore iure numquam obcaecati?</p>
+            </div>
+
+        </div>
+    </div>
+</main>
+<footer class="page-footer z-depth-5 white">
+    <ul class="pagination center">
+        <li><a href="/announcement_recipient"><i class="material-icons">chevron_left</i></a></li>
+        <li class=""><a href="/create_announcement">Edit</a></li>
+        <li class="waves-effect"><a href="/announcement_recipient">Recipients</a></li>
+        <li class="active"><a href="#!">Send</a></li>
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    </ul>
+    <div class="footer-copyright">
+        <div class="container">
+            © 2020 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        </div>
+    </div>
+</footer>
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="{{ url_for('.static', filename='js/jQuery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('.static', filename='js/materialize.js') }}"></script>
+
+<script>
+    {% with messages=get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                M.toast({html: '{{ message }}'});
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+
+    });
+</script>
+
+</body>
+</html>
