@@ -13,16 +13,23 @@
 # limitations under the License.
 
 from __future__ import print_function
-import firebase_admin
-from firebase_admin import credentials, initialize_app, messaging
-
-cred = credentials.Certificate("/main/paul/key2.json")
-initialize_app(cred)
-
 
 import datetime
 
-registration_token = "fvvLc3imDVA:APA91bFPCU0cdfwzGLtXz0phSSJ8CaeEOfHKGP_TIzbr9cnGPY7Sd2Ah5fxkqo2SmsUqY_fDyIRal0nNVD5H77yRZWCGsvoiPFNGcMFSeAxYgtgx0xwvFj_YIA2Jqk6llsynJNJkMVlN"
+from firebase_admin import messaging
+
+
+def send_announcement(token, announcement_id):
+    message = messaging.Message(
+        data={
+            'type': "NewAnnouncement",
+            'announcement_id': str(announcement_id)
+        },
+        token=token
+    )
+    messaging.send(message)
+
+
 def send_to_token(token, in_data):
     # [START send_to_token]
     # This registration token comes from the client FCM SDKs.

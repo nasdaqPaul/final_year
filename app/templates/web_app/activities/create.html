@@ -10,40 +10,40 @@
     <h4 class="center-align blue-text text-darken-1">Edit content</h4>
 
     <form method="post" id="activity_form">
-            {{ form.hidden_tag() }}
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">add</i>
-                    {{ form.activity_name(id='activity_name') }}
-                    {{ form.activity_name.label }}
-                </div>
-                <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">location_on</i>
-                    {{ form.venue(id='venue') }}
-                    {{ form.venue.label }}
-                </div>
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix">add</i>
+                {{ form.activity_name(id='activity_name') }}
+                {{ form.activity_name.label }}
             </div>
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix">location_on</i>
+                {{ form.venue(id='venue') }}
+                {{ form.venue.label }}
+            </div>
+        </div>
 
-            <div class="row">
-                {{ form.description(id = "editor") }}
+        <div class="row">
+            {{ form.description(id = "editor") }}
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m4">
+                <i class="material-icons prefix">event</i>
+                {{ form.date(class='datepicker', id='date') }}
+                {{ form.date.label }}
             </div>
-            <div class="row">
-                <div class="input-field col s12 m4">
-                    <i class="material-icons prefix">event</i>
-                    {{ form.date(class='datepicker', id='date') }}
-                    {{ form.date.label }}
-                </div>
-                <div class="input-field col s3 m4">
-                    <i class="material-icons prefix">access_time</i>
-                    {{ form.start_time(class='timepicker', id='start_time') }}
-                    {{ form.start_time.label }}
-                </div>
-                <div class="input-field col s3 m4">
-                    <i class="material-icons prefix">access_time</i>
-                    {{ form.end_time(class='timepicker', id='end_time') }}
-                    {{ form.end_time.label }}
-                </div>
+            <div class="input-field col s3 m4">
+                <i class="material-icons prefix">access_time</i>
+                {{ form.start_time(class='timepicker', id='start_time') }}
+                {{ form.start_time.label }}
             </div>
+            <div class="input-field col s3 m4">
+                <i class="material-icons prefix">access_time</i>
+                {{ form.end_time(class='timepicker', id='end_time') }}
+                {{ form.end_time.label }}
+            </div>
+        </div>
     </form>
 {% endblock %}
 
@@ -120,7 +120,7 @@
 
             editor.on('valuechanged', function (e, src) {
                 if ($('#activity_form').data('changed')) {
-                    return;
+
                 } else {
                     $('#activity_form').data('changed', true);
                 }

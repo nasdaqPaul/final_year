@@ -1,6 +1,6 @@
-{% extends 'web_app/activities/layout.html' %}
+{% extends 'web_app/announcements/layout.html' %}
 {% block content %}
-    <h2 class="center-align">Create Activity</h2>
+    <h2 class="center-align">Create Announcement</h2>
     <hr>
     <h4 class="center-align blue-text text-darken-1">Preview and Send</h4>
 {% endblock %}
@@ -18,8 +18,9 @@
             <div class="col s6 right-align">
                 <a class="waves-effect waves-light btn red darken"><i
                         class="material-icons right">cancel</i>Cancel All</a>
-                <a class="waves-effect waves-light btn green darken-2 disabled" id="send_button"><i
-                        class="material-icons right">add</i>Post Activity</a>
+                <a href="{{ url_for('web_announcements.post') }}"
+                   class="waves-effect waves-light btn green darken-2 disabled" id="send_button"><i
+                        class="material-icons right">add</i>Post Announcement</a>
             </div>
         </div>
         <ul class="pagination center">

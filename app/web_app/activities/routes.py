@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, request, session, url_for, jsonify
 from flask_login import login_required, current_user
-from .forms import ActivityForm
 
 from app.web_app.auth.models import PermittedCourse
+from .forms import ActivityForm
 
 web_activities = Blueprint('web_activities', __name__, template_folder='templates', static_folder='static',
                            url_prefix='/web/activities')
@@ -61,6 +61,7 @@ def save_recipients():
     recipients = request.get_json()
     print(recipients)
     return jsonify('success')
+
 
 @web_activities.route('/preview')
 @login_required

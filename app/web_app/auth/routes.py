@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, redirect, flash, request, url_for
 from flask_login import logout_user, login_required, login_user
+from werkzeug.urls import url_parse
+
+from app import db
 from app import login_manager
 from .forms import LoginForm, RegistrationForm
-from werkzeug.urls import url_parse
 from .models import StaffAccount, Staff
-from app import db
 
 login_manager.login_view = "web_auth.login"
 web_auth = Blueprint('web_auth', __name__, template_folder='templates', static_folder='static', url_prefix='/web/auth')

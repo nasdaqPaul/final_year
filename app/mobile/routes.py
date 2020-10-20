@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
+
+from app import db
 from app.mobile.models import Student, AppInstance
 from app.web_app.announcements.models import Announcement
-from app import db
 
 mobile = Blueprint('mobile', __name__, url_prefix="/mobile/auth")
 
@@ -42,6 +43,8 @@ def login_student():
         if app_instance is None:
             app_instance = AppInstance(department=department, number=number, admission_year=admission_year,
                                        token=login_data.get("instance_token"))
+        else:
+            app_instance.token = login_data.get("instance_token")
 
         db.session.add(app_instance)
         db.session.commit()

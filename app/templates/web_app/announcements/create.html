@@ -26,21 +26,21 @@
     </form>
 {% endblock %}
 {% block footer %}
-<footer class="page-footer z-depth-5 white">
-    <ul class="pagination center">
-        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-        <li class="active"><a href="#!">Edit</a></li>
-        <li class="waves-effect"><a id="recipients">Recipients</a></li>
-        <li class="disabled"><a href="#!">Send</a></li>
-        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-    </ul>
-    <div class="footer-copyright">
-        <div class=" black-text">
-            © 2020 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+    <footer class="page-footer z-depth-5 white">
+        <ul class="pagination center">
+            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+            <li class="active"><a href="#!">Edit</a></li>
+            <li class="waves-effect"><a id="recipients">Recipients</a></li>
+            <li class="disabled"><a href="#!">Send</a></li>
+            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+        <div class="footer-copyright">
+            <div class=" black-text">
+                © 2020 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 {% endblock %}
 {% block js %}
     <script type="text/javascript"
@@ -84,7 +84,7 @@
             });
             editor.on('valuechanged', function (e, src) {
                 if ($('#announcement_form').data('changed')) {
-                    return;
+
                 } else {
                     $('#announcement_form').data('changed', true);
                 }

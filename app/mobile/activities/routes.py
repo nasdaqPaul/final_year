@@ -1,4 +1,5 @@
 from flask import Blueprint
+
 from app.web_app.activities.models import Activity
 
 mobile = Blueprint('mobile_activities', __name__, url_prefix='/mobile/activities')

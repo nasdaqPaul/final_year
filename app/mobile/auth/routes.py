@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
-from .models import Student, StudentAccount, AppInstance
+
 from app import db
+from .models import Student, AppInstance
 
 mobile = Blueprint('mobile_auth', __name__, url_prefix='/mobile/auth')
 
@@ -14,10 +15,10 @@ def login():
     admission_year = login_data.get("admission_year")
 
     # TODO: Remove in deployment, for testing purposes only
+    #
     print(f"Admission number: {course_code}-{number}-{admission_year}")
     print(f"Password: {login_data.get('password')}")
     print(f"Device ID: {login_data.get('instance_token')}")
-
 
     student = Student.query.filter_by(course_code=course_code, number=number,
                                       admission_year=admission_year).first()

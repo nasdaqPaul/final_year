@@ -1,5 +1,6 @@
-from app import db
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from app import db
 
 
 class Student(db.Model):
@@ -29,7 +30,7 @@ class StudentAccount(db.Model):
     db.ForeignKeyConstraint([course_code, number, admission_year],
                             [Student.course_code, Student.number, Student.admission_year])
 
-    owner = db.relationship('Student', back_populates = 'account', uselist=False)
+    owner = db.relationship('Student', back_populates='account', uselist=False)
     app = db.relationship('AppInstance', back_populates='account', uselist=False)
     password = db.Column(db.String(120), nullable=False)
 
@@ -39,6 +40,7 @@ class StudentAccount(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+
 class AppInstance(db.Model):
     __tablename__ = 'app_instances'
 
@@ -46,7 +48,8 @@ class AppInstance(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     admission_year = db.Column(db.Integer, primary_key=True)
 
-    db.ForeignKeyConstraint([course_code, number, admission_year], [StudentAccount.course_code, StudentAccount.number, StudentAccount.admission_year])
+    db.ForeignKeyConstraint([course_code, number, admission_year],
+                            [StudentAccount.course_code, StudentAccount.number, StudentAccount.admission_year])
 
     token = db.Column(db.String(240), nullable=False)
     account = db.relationship('StudentAccount', back_populates='app', uselist=False)

@@ -60,8 +60,9 @@
                     </div>
 
                     <!-- Custom Tab -->
-                    <div id="custom_{{ permitted_course.course.course_code }}" class="col s12 rd" style="overflow-y: auto; max-height: 30vh">
-                        <table id="custom_table_{{ permitted_course.course.course_code }}" class="hide" >
+                    <div id="custom_{{ permitted_course.course.course_code }}" class="col s12 rd"
+                         style="overflow-y: auto; max-height: 30vh">
+                        <table id="custom_table_{{ permitted_course.course.course_code }}" class="hide">
                             <thead>
                             <tr>
                                 <th>Admission Number</th>
@@ -272,9 +273,9 @@
                         success: function (msg) {
                             // TODO: Remove the log
                             console.log(msg);
-                            window.location.href = "preview"
+                            window.location.href = "preview";
                         }
-                    })
+                    });
                     return;
                 }
 
