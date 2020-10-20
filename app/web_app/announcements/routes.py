@@ -18,7 +18,7 @@ web_announcements = Blueprint('web_announcements', __name__, template_folder='te
 @web_announcements.route('/')
 @login_required
 def home():
-    return render_template('web_app/announcements/index.html')
+    return render_template('web_app/announcements/index.html', title="Announcements")
 
 
 @web_announcements.route('/get_students')
@@ -46,7 +46,7 @@ def create():
         form.content.data = saved_announcement['content']
     else:
         form = AnnouncementForm()
-    return render_template('web_app/announcements/create.html', form=form)
+    return render_template('web_app/announcements/create.html', form=form, title="Announcements | Create | Edit")
 
 
 @web_announcements.route('/save/<next_link>', methods=['POST'])
@@ -65,13 +65,13 @@ def save(next_link):
 @login_required
 def recipients():
     permitted_courses = PermittedCourse.query.filter_by(staff_id=current_user.staff_id)
-    return render_template('web_app/announcements/recipients.html', permitted_courses=permitted_courses)
+    return render_template('web_app/announcements/recipients.html', permitted_courses=permitted_courses, title="Announcements | Create | Recipients")
 
 
 @web_announcements.route('/preview')
 @login_required
 def preview():
-    return render_template('web_app/announcements/preview.html')
+    return render_template('web_app/announcements/preview.html', title="Announcements | Create | Preview")
 
 
 @web_announcements.route('/save_recipients', methods=['POST'])

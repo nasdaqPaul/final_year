@@ -30,7 +30,7 @@ def login():
 
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('web_main.home')
-            flash("Welcome")
+            flash("Welcome " + staff.first_name)
             return redirect(next_page)
 
         else:
@@ -44,7 +44,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('web_main.home'))
+    return redirect(url_for('web_auth.login'))
 
 
 @web_auth.route('/register', methods=['POST', 'GET'])

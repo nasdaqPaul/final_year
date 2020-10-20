@@ -1,14 +1,14 @@
 {% extends 'web_app/activities/layout.html' %}
 {% block content %}
-    <h2 class="center-align">Create Activity</h2>
+    <h2 class="center-align orange-text">Create Activity</h2>
     <hr>
-    <h4 class="center-align blue-text text-darken-1">Select Recipients</h4>
+    <h4 class="center-align indigo-text text-darken-4">Select Recipients</h4>
 
     <ul class="collapsible">
         {% for permitted_course in permitted_courses %}
             <li>
-                <div class="collapsible-header"><i
-                        class="material-icons">menu</i>{{ permitted_course.course.name }}</div>
+                <div class="collapsible-header indigo-text text-darken-4"><i
+                        class="material-icons orange-text">menu</i>{{ permitted_course.course.name }}</div>
                 <div class="row collapsible-body">
                     <div class="row">
                         <ul class="tabs">
@@ -63,7 +63,7 @@
                     <div id="custom_{{ permitted_course.course.course_code }}" class="col s12 rd"
                          style="overflow-y: auto; max-height: 30vh">
                         <table id="custom_table_{{ permitted_course.course.course_code }}" class="hide">
-                            <thead>
+                            <thead class="orange-text">
                             <tr>
                                 <th>Admission Number</th>
                                 <th>Student Name</th>
@@ -280,7 +280,9 @@
                 }
 
                 M.toast({
-                    html: "Recipients cannot be empty"
+                    html: "<strong>Recipients cannot be empty</strong>",
+                    classes: "red accent-4 white-text rounded",
+                    displayLength: 2000
                 });
                 e.preventDefault();
             });

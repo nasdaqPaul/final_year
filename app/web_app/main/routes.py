@@ -7,4 +7,4 @@ web_main = Blueprint('web_main', __name__, template_folder='templates', static_f
 @web_main.route('/')
 @login_required
 def home():
-    return render_template('web_app/main/index.html')
+    return render_template('web_app/main/index.html', title="Home")

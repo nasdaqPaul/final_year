@@ -2,10 +2,10 @@
 {% block body %}
     <header>
         <nav>
-            <div class="nav-wrapper ">
-                <a href="#" class="brand-logo">FinalYear</a>
+            <div class="nav-wrapper indigo darken-4">
+                <a href="#" class="brand-logo orange-text text-darken-1">FinalYear</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="{{ url_for('web_auth.logout') }}"><i class="material-icons right">account_circle</i>Log
+                    <li><a href="{{ url_for('web_auth.logout') }}" class="orange-text"><i class="material-icons right">account_circle</i>Log
                         Out</a></li>
                 </ul>
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -16,27 +16,24 @@
     <ul id="slide-out" class="sidenav sidenav-fixed invisible grey lighten-3">
         <li>
             <div class="user-view ">
-                {#                <div class="background grey">#}
-                {#                  <img src="https://picsum.photos/seed/picsum/200/300">#}
-                {#                </div>#}
-                <a href="#user"><img class="circle" src="https://picsum.photos/id/237/200/300"></a>
+                <div class="background grey">
+                    <img src={{ url_for('static', filename="web_app/img/profile_background.jpg") }}>
+                </div>
+                <a href="#user"><img class="circle" src="{{ url_for('static', filename='web_app/img/default_profile.jpg') }}"></a>
                 <a href="#name"><span
-                        class="name">{{ current_user.first_name + " " + current_user.last_name }}</span></a>
+                        class="name indigo-text text-darken-4">{{ current_user.first_name + " " + current_user.last_name }}</span></a>
                 {#                <p>{{ current_user.department.name }}<br/><span class="red-text">{{ current_user.role }}</span></p>#}
             </div>
         </li>
+        <li><a class="subheader orange-text">Navigation</a></li>
+        <li class="active"><a href="{{ url_for('web_main.home') }}" class="indigo-text text-darken-4"><i class="material-icons orange-text">home</i>Home</a></li>
+        <li><a href="{{ url_for('web_activities.home') }}" class="indigo-text text-darken-4"><i class="material-icons orange-text">event</i>Activities</a></li>
+        <li><a href="{{ url_for('web_announcements.home') }}" class="indigo-text text-darken-4"><i
+                class="material-icons orange-text">announcement</i>Announcements</a></li>
         <li>
             <div class="divider"></div>
         </li>
-        <li><a class="subheader">Actions</a></li>
-        <li class="active"><a href="{{ url_for('web_main.home') }}"><i class="material-icons">home</i>Home</a></li>
-        <li><a href="{{ url_for('web_activities.home') }}"><i class="material-icons">event</i>Activities</a></li>
-        <li><a href="{{ url_for('web_announcements.home') }}"><i
-                class="material-icons">announcement</i>Announcements</a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li><a class="subheader">Subheader</a></li>
+        <li><a class="subheader orange-text">Subheader</a></li>
         <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
 
     </ul>

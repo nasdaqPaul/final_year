@@ -5,20 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="center-align">Create Activity</h2>
+    <h2 class="center-align orange-text">Create Activity</h2>
     <hr>
-    <h4 class="center-align blue-text text-darken-1">Edit content</h4>
+    <h4 class="center-align indigo-text text-darken-4">Edit content</h4>
 
     <form method="post" id="activity_form">
         {{ form.hidden_tag() }}
         <div class="row">
             <div class="input-field col s12 m6">
-                <i class="material-icons prefix">add</i>
+                <i class="material-icons prefix orange-text">add</i>
                 {{ form.activity_name(id='activity_name') }}
                 {{ form.activity_name.label }}
             </div>
             <div class="input-field col s12 m6">
-                <i class="material-icons prefix">location_on</i>
+                <i class="material-icons prefix orange-text">location_on</i>
                 {{ form.venue(id='venue') }}
                 {{ form.venue.label }}
             </div>
@@ -29,17 +29,17 @@
         </div>
         <div class="row">
             <div class="input-field col s12 m4">
-                <i class="material-icons prefix">event</i>
+                <i class="material-icons prefix orange-text">event</i>
                 {{ form.date(class='datepicker', id='date') }}
                 {{ form.date.label }}
             </div>
             <div class="input-field col s3 m4">
-                <i class="material-icons prefix">access_time</i>
+                <i class="material-icons prefix orange-text">access_time</i>
                 {{ form.start_time(class='timepicker', id='start_time') }}
                 {{ form.start_time.label }}
             </div>
             <div class="input-field col s3 m4">
-                <i class="material-icons prefix">access_time</i>
+                <i class="material-icons prefix orange-text">access_time</i>
                 {{ form.end_time(class='timepicker', id='end_time') }}
                 {{ form.end_time.label }}
             </div>
@@ -136,7 +136,7 @@
                     M.toast({
                         html: "<strong>Event Name must be filled</strong>",
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     activity_name.focus();
                     return;
@@ -145,7 +145,7 @@
                     M.toast({
                         html: '<strong>Event Venue cannot be empty</strong>',
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     activity_venue.focus();
                     return;
@@ -154,7 +154,7 @@
                     M.toast({
                         html: "<strong>Event Date must be filled</strong>",
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     M.Datepicker.getInstance(activity_date).open();
                     return;
@@ -163,7 +163,7 @@
                     M.toast({
                         html: '<strong>Start time must be filled</strong>',
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     M.Timepicker.getInstance(start_time).open();
                     return;
@@ -172,13 +172,15 @@
                     M.toast({
                         html: '<strong>End time must be filled</strong>',
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     M.Timepicker.getInstance(end_time).open();
                     return;
                 }
                 if (content.value.trim() === '') {
-                    M.toast({html: "No content"});
+                    M.toast({html: "<strong>The activity has no description</strong>",
+                    displayLength: 2000,
+                    classes: "red accent-4 white-text rounded"});
                     editor.focus();
                     return;
                 }

@@ -4,21 +4,23 @@
           href="{{ url_for ('static', filename='web_app/simditor/styles/simditor.css') }}">
 {% endblock %}
 {% block content %}
-    <h1 class="center-align">Create Announcementasdas</h1>
-    <form id='announcement_form' method="post" action="/announcement_recipient" class="white card">
+    <h2 class="center-align orange-text">Create Announcement</h2>
+    <hr>
+    <h4 class="center-align indigo-text text-darken-4">Edit content</h4>
+    <form id='announcement_form' method="post" action="/announcement_recipient">
 
         {{ form.hidden_tag() }}
         <div class="row">
 
             <div class="input-field col s12">
-                <i class="material-icons prefix">add</i>
+                <i class="material-icons prefix indigo-text orange-text">add</i>
                 {{ form.title(id = 'title') }}
                 {{ form.title.label }}
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <i class="material-icons prefix">mode_edit</i>
+                <i class="material-icons prefix ">mode_edit</i>
                 {{ form.content(class = "materialize-textarea", id='editor') }}
             </div>
 
@@ -98,7 +100,7 @@
                     M.toast({
                         html: "<strong>Announcement Title must be filled</strong>",
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     title.focus();
                     return;
@@ -106,9 +108,9 @@
 
                 if (content.value.trim() == '') {
                     M.toast({
-                        html: "<strong>No content</strong>",
+                        html: "<strong>The announcement has no content</strong>",
                         displayLength: 2000,
-                        classes: "teal white-text rounded"
+                        classes: "red accent-4 white-text rounded"
                     });
                     editor.focus();
                     return;

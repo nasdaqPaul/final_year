@@ -21,7 +21,8 @@
     {% with messages=get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-                M.toast({html: '{{ message }}'});
+                M.toast({html: '<strong>{{ message }}</strong>',
+                classes: "orange  indigo-text text-darken-4 rounded"});
             {% endfor %}
         {% endif %}
     {% endwith %}

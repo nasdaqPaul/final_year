@@ -1,5 +1,8 @@
 {% extends 'web_app/announcements/layout.html' %}
 
 {% block content %}
-    <a href="{{ url_for('web_announcements.create') }}">Create Announcement</a>
+    <ul class="collection with-header">
+        <li class="collection-header"><h4 class="indigo-text text-darken-4">Actions</h4></li>
+        <a href="{{ url_for('web_announcements.create') }}" class="collection-item orange-text">Create New Announcement</a>
+    </ul>
 {% endblock %}

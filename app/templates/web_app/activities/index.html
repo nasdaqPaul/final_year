@@ -1,5 +1,7 @@
 {% extends 'web_app/activities/layout.html' %}
 {% block content %}
-    <h1>Hehe</h1>
-    <a href="{{ url_for('web_activities.create') }}">Create Activity</a>
+    <ul class="collection with-header">
+        <li class="collection-header"><h4 class="indigo-text text-darken-4">Actions</h4></li>
+         <a href="{{ url_for('web_activities.create') }}" class="collection-item orange-text">Create New Activity</a>
+      </ul>
 {% endblock %}

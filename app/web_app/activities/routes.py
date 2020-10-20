@@ -29,7 +29,7 @@ def create():
         form.end_time.data = saved_activity['end_time']
     else:
         form = ActivityForm()
-    return render_template('web_app/activities/create.html', form=form, title="Activities | Create")
+    return render_template('web_app/activities/create.html', form=form, title="Activities | Create | Edit")
 
 
 @web_activities.route('/save/<next_link>', methods=['POST'])
@@ -52,7 +52,7 @@ def save(next_link):
 @login_required
 def recipients():
     recipients = PermittedCourse.query.filter_by(staff_id=current_user.staff_id)
-    return render_template('web_app/activities/recipients.html', permitted_courses=recipients)
+    return render_template('web_app/activities/recipients.html', permitted_courses=recipients, title="Activities | Create | Recipients")
 
 
 @web_activities.route('/save_recipients', methods=['POST'])
@@ -66,4 +66,4 @@ def save_recipients():
 @web_activities.route('/preview')
 @login_required
 def preview():
-    return render_template('/web_app/activities/preview.html')
+    return render_template('/web_app/activities/preview.html', title="Announcements | Create | Preview")
