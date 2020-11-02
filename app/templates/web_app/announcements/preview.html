@@ -1,8 +1,51 @@
 {% extends 'web_app/announcements/layout.html' %}
+{% block css %}
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto+Slab);
+                @import url(https://fonts.googleapis.com/css?family=Volkhov:wght@400;700&display=swap);
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+
+        body {
+            background-color: #fff3e0;
+        }
+
+        #document {
+            font-family: 'Libre Baskerville', Serif;
+            margin: 3em 4em 3em 4em;
+            padding: 4em 8em 4em 8em;
+        }
+        #document header {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <h2 class="center-align orange-text">Create Announcement</h2>
     <hr>
     <h4 class="center-align indigo-text text-darken-4">Preview and Send</h4>
+    <div class="card" id="document">
+        <header class="center-align">
+            <img src="{{ url_for('static', filename='web_app/img/logo.png') }}" alt="" height="250em">
+            <h1>Machakos University</h1>
+            <h3> School of {{ current_user.department.school.name }}</h3>
+            <hr>
+            <div class="row left-align">
+                <div class="col s12">
+                    <div class="col s8">from</div>
+                    <div class="col s4">date</div>
+                </div>
+                <div class="col s12">
+                    <div class="col s8">To</div>
+                    <div class="col s4">REf Number</div>
+                </div>
+            </div>
+        </header>
+        <main class="flow-text">
+            {{ session['announcement_form']['content'] | safe }}
+        </main>
+    </div>
 {% endblock %}
 {% block footer %}
     <footer class="page-footer z-depth-5 white">

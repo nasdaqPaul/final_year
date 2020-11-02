@@ -1,13 +1,13 @@
-header, main, footer {
+body > header, body > main, body > footer {
     margin-left: 300px;
 }
 
 @media only screen and (max-width: 992px) {
-    header, main, footer {
+    body > header, body > main, body >footer {
         margin-left: 0;
     }
 }
-footer {
+body >footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -19,4 +19,14 @@ main {
 }
 .page-footer{
     padding-top: 0px;
+}
+
+.pagination li.active {
+    background-color: #ff9800;
+}
+.tabs .tab a, .tabs .tab a.active {
+    color: #ff9800;
+}
+.tabs .tab a:hover {
+    color: #1a237e;
 }
