@@ -13,8 +13,8 @@ body >footer {
     left: 0;
     right: 0;
 }
-main {
-    margin-bottom: 120px;
+body > main {
+    margin-bottom: 200px;
     padding: 10px;
 }
 .page-footer{
