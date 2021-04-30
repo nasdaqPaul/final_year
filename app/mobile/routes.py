@@ -57,27 +57,6 @@ def login_student():
         })
 
 
-@mobile.route("/get_announcement/<message_id>")
-def get_announcement(message_id):
-    announcement = Announcement.query.get(message_id)
-
-    if (announcement):
-
-        value = jsonify({
-            "from": "Dapartment of " + announcement.sender.department.name,
-            "title": announcement.title,
-            "content": announcement.content,
-            "posted_on": announcement.posted_on
-        })
-        print("Value", value)
-        return value
-    else:
-        return jsonify({
-            "Error": "MessageNotFound",
-            "message_id": message_id
-        })
-
-
 @mobile.route("/update_device_token", methods=['POST'])
 def update_token(adm_number, new_token):
     app_instance = AppInstance.query.get(adm_number)

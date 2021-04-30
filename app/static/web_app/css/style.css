@@ -30,3 +30,14 @@ body > main {
 .tabs .tab a:hover {
     color: #1a237e;
 }
+
+.collection-item span.badge {
+    margin-top: calc(0.75rem - 11px);
+}
+span.badge.new-me {
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #26a69a;
+    border-radius: 2px;
+}

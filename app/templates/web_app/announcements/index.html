@@ -3,6 +3,14 @@
 {% block content %}
     <ul class="collection with-header">
         <li class="collection-header"><h4 class="indigo-text text-darken-4">Actions</h4></li>
-        <a href="{{ url_for('web_announcements.create') }}" class="collection-item orange-text">Create New Announcement</a>
+        <a href="{{ url_for('web_announcements.create') }}" class="collection-item orange-text">Create New
+            Announcement</a>
     </ul>
+    <hr>
+    <h4 class="indigo-text text-darken-4">Recent announcements</h4>
+    <div class="collection">
+        {% for announcement in current_user.announcements %}
+            <a href="#!" class="collection-item row"><span class="badge new-me">{{ announcement.downloads }} view(s)</span>{{ announcement.title }} | <span class="indigo-text text-darken-4"> {{ announcement.formatted_date }}</span></a>
+        {% endfor %}
+    </div>
 {% endblock %}

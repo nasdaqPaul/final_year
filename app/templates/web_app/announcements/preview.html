@@ -29,7 +29,8 @@
     <h4 class="center-align indigo-text text-darken-4">Preview and Send</h4>
     <div class="card" id="document">
         <header class="center-align">
-            <img src="{{ url_for('static', filename='web_app/img/logo.png') }}" alt="" height="250em" width="250em" class="responsive-img">
+            <img src="{{ url_for('static', filename='web_app/img/logo.png') }}" alt="" height="250em" width="250em"
+                 class="responsive-img">
             <h2>Machakos University</h2>
             <h4> School of {{ current_user.department.school.name }}</h4>
             <hr>
@@ -55,7 +56,7 @@
 {% block footer %}
     <footer class="page-footer z-depth-5 white">
         <div class="row black-text" style="padding: 0.3em">
-            <div class="col s6">
+            <div class="col s12 center-align">
                 <p>
                     <label>
                         <input type="checkbox" class="filled-in" id="confirmation"/>
@@ -63,12 +64,17 @@
                     </label>
                 </p>
             </div>
-            <div class="col s6 right-align">
-                <a class="waves-effect waves-light btn red darken"><i
-                        class="material-icons right">cancel</i>Cancel All</a>
-                <a href="{{ url_for('web_announcements.post') }}"
-                   class="waves-effect waves-light btn green darken-2 disabled" id="send_button"><i
-                        class="material-icons right">add</i>Post Announcement</a>
+            <hr class="col s12">
+            <div class="col s12 center-align">
+                <div class="col s3 m2 offset-m2"><a href="" class="btn col red s12">cancel<i
+                        class="material-icons right">cancel</i></a></div>
+                <div class="col s3 m2"><a href="{{ url_for('web_announcements.create') }}" class="btn col s12 blue">edit<i
+                        class="material-icons right">edit</i></a></div>
+                <div class="col s3 m2"><a href="" class="btn col s12 orange disabled" id="print_button">print<i
+                        class="material-icons right">print</i></a></div>
+                <div class="col s3 m2"><a href="{{ url_for('web_announcements.post') }}"
+                                          class="btn col s12 green disabled" id="send_button">send<i
+                        class="material-icons right">send</i></a></div>
             </div>
         </div>
         <ul class="pagination center">
@@ -98,10 +104,39 @@
             }).split(' ').join('/'));
             $('#confirmation').on('click', function () {
                 if ($(this).prop('checked')) {
-                    $('#send_button').removeClass('disabled')
+                    $('#send_button').removeClass('disabled');
+                    $('#print_button').removeClass('disabled');
                 } else {
-                    $('#send_button').addClass('disabled')
+                    $('#send_button').addClass('disabled');
+                    $('#print_button').addClass('disabled');
                 }
+            });
+            $("#print_button").on("click", function () {
+                let divContents = $("#document").html();
+                let printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head><title>DIV Contents</title>');
+                printWindow.document.write(`
+                <link type="text/css" rel="stylesheet" href="{{ url_for ('static', filename='web_app/css/materialize.css') }}"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for ('static', filename='web_app/css/style.css') }}">
+            <style>
+              body{
+            font-family: 'Libre Baskerville', Serif;
+            margin: 3em 8em 3em 8em;
+            padding: 6em 8em 20em 8em;
+            min-height: 200vh;
+        }
+
+        header {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+</style>`)
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
             })
         })
     </script>

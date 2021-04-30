@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from app.web_app.announcements.models import Announcement
+from app.web_app.announcements.models import Announcement, db
 
 mobile = Blueprint('mobile_announcements', __name__, url_prefix='/mobile/announcements')
 
@@ -10,6 +10,9 @@ def get_announcement(announcement_id):
     announcement = Announcement.query.get(announcement_id)
 
     if announcement:
+        announcement.downloads += 1
+        db.session.add(announcement)
+        db.session.commit()
         return jsonify({
             "error": "None",
             "announcement": {
